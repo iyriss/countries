@@ -5,16 +5,18 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: [
-          "Inter",
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
-          "Apple Color Emoji",
-          "Segoe UI Emoji",
-          "Segoe UI Symbol",
-          "Noto Color Emoji",
-        ],
+        assistant: ["Assistant", "serif"],
+      },
+      colors: {
+        midnight: '#000315',
+        'dark-indigo': '#1C122C',
+        'dark-purple': '#2D124C',
+        'lilac': '#6B6374',
+        'heather-gray': '#6B6374',
+        "muted": '#F1F2F6'
+      },
+      backgroundImage: {
+        'primary': 'linear-gradient(90.66deg, #6700E9 11.53%, #D83AFF 229.96%)',
       },
     },
   },
