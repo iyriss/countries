@@ -12,7 +12,7 @@ export default function () {
 
   return (
     <div className='flex h-full w-full flex-col md:flex-row'>
-      <div className='mx-auto my-8 w-full p-8 text-navy-blue md:m-auto md:p-6'>
+      <div className='mx-auto mb-8 mt-16 w-full p-8 text-navy-blue md:m-auto md:w-1/2 md:p-6'>
         <div className='mx-auto w-full max-w-[544px]'>
           <h1 className='mb-4 text-[32px] font-semibold'>Welcome Back!</h1>
           <p>Learn all about the countries of the world</p>
@@ -51,9 +51,25 @@ export default function () {
         </div>
       </div>
 
-      <div className='mx-auto w-full p-6'>
-        <div className='h-full max-w-[872px] rounded-[40px] bg-primary p-6'>
-          <div>The simplest way to track and manage your geographical data</div>
+      <div className='mx-auto w-full p-6 md:w-1/2'>
+        <div className='mx-auto h-full max-w-[544px] rounded-[40px] bg-primary p-6 px-16 text-white md:max-w-[872px]'>
+          <div className='mb-10 mt-[123px] max-w-[651px] text-4xl font-semibold'>
+            The simplest way to track and manage your geographical data
+          </div>
+          <div className='text-xl'>Enter your credentials to access your account</div>
+
+          <div className='mt-16 flex h-fit flex-col md:mt-[160px]'>
+            <img
+              src='/images/countries-list.png'
+              alt='Countries list preview'
+              className='w-[80%] md:max-w-[550px]'
+            />
+            <img
+              src='/images/country-overview.png'
+              alt='Country overview preview'
+              className='ml-auto w-[80%] -translate-y-[30%] md:max-w-[550px]'
+            />
+          </div>
         </div>
       </div>
     </div>
