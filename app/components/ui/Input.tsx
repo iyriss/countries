@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 type InputProps = {
   label?: string;
   placeholder?: string;
@@ -8,17 +10,25 @@ type InputProps = {
 };
 
 export function Input({ label, type, placeholder, className, icon, onIconClick }: InputProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const [hasContent, setHasContent] = useState(false);
+
   return (
     <div className='relative'>
       <input
-        className={`h-[70px] w-full rounded-[20px] border border-light-gray px-6 pb-3 pt-8 text-navy-blue outline-midnight placeholder-shown:pb-6 placeholder-shown:pt-6 ${
-          icon ? 'pr-12' : 'pr-6'
-        } peer placeholder:text-[#b1b3bd] ${className}`}
+        className={`h-[70px] w-full rounded-[20px] border border-light-gray text-navy-blue outline-midnight ${isFocused && hasContent ? 'px-6 pb-3 pt-8' : 'p-6'} ${
+          icon ? 'pr-12' : ''
+        } placeholder:text-[#b1b3bd] ${className}`}
         type={type || 'text'}
         placeholder={placeholder}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onChange={(e) => setHasContent(e.target.value.length > 0)}
       />
       {label && (
-        <label className='absolute left-6 top-1/2 -translate-y-1/2 text-[#b1b3bd] opacity-0 transition-all peer-focus:-translate-y-9 peer-focus:text-xs peer-[:not(:placeholder-shown)]:-translate-y-9 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:opacity-100'>
+        <label
+          className={`absolute left-6 top-1/2 -translate-y-1/2 text-[#b1b3bd] transition-all ${isFocused && hasContent ? '-translate-y-9 text-xs opacity-100' : 'opacity-0'}`}
+        >
           {label}
         </label>
       )}
