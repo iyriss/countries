@@ -5,3 +5,4 @@ export { OpenEyeIcon, ClosedEyeIcon } from './EyeIcon';
 export { LogOutIcon } from './LogOutIcon';
 export { MapIcon } from './MapIcon';
 export { MicrosoftIcon } from './MicrosoftIcon';
+export { SearchIcon } from './SearchIcon';

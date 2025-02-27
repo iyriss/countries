@@ -1,8 +1,8 @@
 import type { MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { Layout } from '../components/layout/Layout';
-
 import { ContinentDropdown } from './home/ContinentDropdown';
+import { SearchBar } from '../components/ui';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
@@ -27,7 +27,7 @@ export default function Index() {
         </div>
         <div className='mb-10 flex items-center gap-4'>
           <ContinentDropdown />
-          <input type='search' placeholder='Search' />
+          <SearchBar className='h-[50px] w-[280px]' />
         </div>
 
         <table className='w-full font-assistant'>
