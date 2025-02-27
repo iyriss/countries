@@ -17,16 +17,16 @@ export const SearchIcon = ({ className }: SearchIconProps) => {
         cy='6'
         r='5'
         stroke={'currentColor'}
-        stroke-width='1.5'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
       <path
         d='M9.66675 9.66667L13.0001 13'
         stroke={'currentColor'}
-        stroke-width='1.5'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeWidth='1.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   );

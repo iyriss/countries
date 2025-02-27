@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dropdown } from './shared/Dropdown';
+import { Dropdown } from '../../shared';
 
 const allContinents = [
   'All continents',

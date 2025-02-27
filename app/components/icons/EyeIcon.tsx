@@ -14,14 +14,14 @@ const OpenEyeIcon = (props: SVGProps<SVGSVGElement>) => {
         <path
           d='M0.833313 9.99992C0.833313 9.99992 4.16665 3.33325 9.99998 3.33325C15.8333 3.33325 19.1666 9.99992 19.1666 9.99992C19.1666 9.99992 15.8333 16.6666 9.99998 16.6666C4.16665 16.6666 0.833313 9.99992 0.833313 9.99992Z'
           stroke='#202543'
-          stroke-linecap='round'
-          stroke-linejoin='round'
+          strokeLinecap='round'
+          strokeLinejoin='round'
         />
         <path
           d='M9.99998 12.4999C11.3807 12.4999 12.5 11.3806 12.5 9.99992C12.5 8.61921 11.3807 7.49992 9.99998 7.49992C8.61927 7.49992 7.49998 8.61921 7.49998 9.99992C7.49998 11.3806 8.61927 12.4999 9.99998 12.4999Z'
           stroke='#202543'
-          stroke-linecap='round'
-          stroke-linejoin='round'
+          strokeLinecap='round'
+          strokeLinejoin='round'
         />
       </g>
     </svg>

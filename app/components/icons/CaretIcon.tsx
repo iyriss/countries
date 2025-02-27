@@ -14,9 +14,9 @@ export const CaretIcon = ({ className }: CaretIconProps) => (
     <path
       d='M1 1.5L6 6.5L11 1.5'
       stroke={'currentColor'}
-      stroke-width='1.5'
-      stroke-linecap='round'
-      stroke-linejoin='round'
+      strokeWidth='1.5'
+      strokeLinecap='round'
+      strokeLinejoin='round'
     />
   </svg>
 );

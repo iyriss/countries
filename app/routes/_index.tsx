@@ -1,7 +1,7 @@
 import type { MetaFunction } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 import { Layout } from '../components/layout/Layout';
-import { ContinentDropdown } from '../components/ContinentDropdown';
+import { ContinentDropdown } from '../components/ui/home/ContinentDropdown';
 import { SearchBar } from '../components/shared';
 
 export const meta: MetaFunction = () => {
@@ -17,6 +17,8 @@ export const loader = async () => {
 
 export default function Index() {
   const { countries } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+  console.log(countries);
 
   return (
     <Layout>
@@ -43,6 +45,9 @@ export default function Index() {
               <tr
                 key={country.name.common}
                 className='mb-4 flex min-h-[78px] items-center rounded-[20px] bg-white px-12 font-semibold text-navy-blue'
+                onClick={() => {
+                  navigate(`/country/${country.name.common}`);
+                }}
               >
                 <td className='max-w-[200px] flex-[2]'>
                   <img
