@@ -7,14 +7,7 @@ type InputProps = {
   onIconClick?: () => void;
 };
 
-export default function Input({
-  label,
-  type,
-  placeholder,
-  className,
-  icon,
-  onIconClick,
-}: InputProps) {
+export function Input({ label, type, placeholder, className, icon, onIconClick }: InputProps) {
   return (
     <div className='relative'>
       <input

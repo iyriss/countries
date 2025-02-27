@@ -1,6 +1,8 @@
 import type { MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import Layout from '../components/layout/Layout';
+import { Layout } from '../components/layout/Layout';
+
+import { ContinentDropdown } from './home/ContinentDropdown';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
@@ -14,7 +16,7 @@ export const loader = async () => {
 
 export default function Index() {
   const { countries } = useLoaderData<typeof loader>();
-  console.log(countries);
+
   return (
     <Layout>
       <div className='px-14 py-12'>
@@ -23,9 +25,10 @@ export default function Index() {
           <div className='mt-3 text-heather-gray'>A database of the countries of the world</div>
         </div>
         <div className='mb-10 flex items-center gap-4'>
-          <button>All continents</button>
+          <ContinentDropdown />
           <input type='search' placeholder='Search' />
         </div>
+
         <table className='w-full font-assistant'>
           <thead>
             <tr className='flex w-full px-12 pb-4 text-left text-sm font-semibold text-light-gray'>

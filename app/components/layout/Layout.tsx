@@ -1,6 +1,6 @@
 import SideBar from './SideBar';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className='relative min-h-screen w-full'>
       <div className='fixed inset-0 -z-10 h-screen w-full overflow-hidden'>
