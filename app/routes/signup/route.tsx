@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link } from '@remix-run/react';
+import { Link, useNavigate } from '@remix-run/react';
 import { Input, Button } from '../../components/ui';
 import { GoogleIcon, MicrosoftIcon, OpenEyeIcon, ClosedEyeIcon } from '../../components/icons';
 
 export default function () {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -40,7 +41,9 @@ export default function () {
             onIconClick={togglePassword}
           />
 
-          <Button className='mb-8 w-full'>Log in</Button>
+          <Button className='mb-8 w-full' onClick={() => navigate('/')}>
+            Log in
+          </Button>
 
           <div className='text-navy-blue'>
             <span>Don't have an account?</span>
@@ -62,12 +65,12 @@ export default function () {
             <img
               src='/images/countries-list.png'
               alt='Countries list preview'
-              className='w-[80%] md:max-w-[550px]'
+              className='w-[80%] shadow-[0px_40px_100px_0px_rgba(0,0,0,0.3)] md:max-w-[550px]'
             />
             <img
               src='/images/country-overview.png'
               alt='Country overview preview'
-              className='ml-auto w-[80%] -translate-y-[30%] md:max-w-[550px]'
+              className='ml-auto w-[80%] -translate-y-[30%] shadow-[0px_40px_100px_0px_rgba(0,0,0,0.3)] md:max-w-[550px]'
             />
           </div>
         </div>

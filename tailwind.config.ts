@@ -6,6 +6,7 @@ export default {
     extend: {
       fontFamily: {
         assistant: ["Assistant", "serif"],
+        inter: ["Inter", "sans-serif"],
       },
       colors: {
         midnight: '#000315',
@@ -14,10 +15,11 @@ export default {
         'navy-blue': '#202543',
         'lilac': '#6B6374',
         'heather-gray': '#6B6374',
-        "muted": '#F1F2F6',
         'light-gray': '#9B9EAC',
+        "gray-overlay": '#F1F2F6',
       },
       backgroundImage: {
+        pattern: 'url("/images/background-ui.avif")',
         'primary': 'linear-gradient(90.66deg, #6700E9 11.53%, #D83AFF 229.96%)',
       },
     },
