@@ -14,15 +14,17 @@ export function Layout({ children, title, description }: LayoutProps) {
       </div>
       <div className='flex w-full'>
         <SideBar />
-        <div className='ml-[276px] mr-auto w-full max-w-screen-2xl p-2'>
-          <div className='px-14 py-12'>
-            <div className='font-inter mb-[45px]'>
-              <h1 className='text-[40px] font-semibold text-dark-purple'>{title}</h1>
-              <div className='mt-3 text-heather-gray'>{description}</div>
+        <main className='flex flex-1 justify-center pl-[276px]'>
+          <div className='w-full max-w-screen-2xl p-2'>
+            <div className='px-14 py-12'>
+              <div className='font-inter mb-[45px]'>
+                <h1 className='text-[40px] font-semibold text-dark-purple'>{title}</h1>
+                <div className='mt-3 text-heather-gray'>{description}</div>
+              </div>
+              {children}
             </div>
-            {children}
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
