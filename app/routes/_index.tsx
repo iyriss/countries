@@ -11,7 +11,8 @@ export const meta: MetaFunction = () => {
 export const loader = async () => {
   const res = await fetch('https://restcountries.com/v3.1/all?fields=name,flags,continents');
   const data = await res.json();
-  return { countries: data };
+  const sortedData = data.sort((a: any, b: any) => a.name.common.localeCompare(b.name.common));
+  return { countries: sortedData };
 };
 
 export default function Index() {
