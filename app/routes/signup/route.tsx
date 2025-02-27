@@ -1,7 +1,15 @@
+import { useState } from 'react';
 import { Link } from '@remix-run/react';
-import Input from '../../components/shared/Input';
+import { Input, Button } from '../../components/ui';
+import { GoogleIcon, MicrosoftIcon, OpenEyeIcon, ClosedEyeIcon } from '../../components/icons';
 
 export default function () {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className='flex h-full w-full flex-col md:flex-row'>
       <div className='mx-auto my-8 w-full p-8 text-navy-blue md:m-auto md:p-6'>
@@ -9,17 +17,30 @@ export default function () {
           <h1 className='mb-4 text-[32px] font-semibold'>Welcome Back!</h1>
           <p>Learn all about the countries of the world</p>
 
-          <div className='flex justify-between'>
-            <button>Sign up with google</button>
-            <button>Sign up with Microsoft</button>
+          <div className='mt-8 flex justify-between gap-4'>
+            <Button variant='secondary' className='flex w-full items-center justify-center gap-4'>
+              <GoogleIcon />
+              Sign up with google
+            </Button>
+            <Button variant='secondary' className='flex w-full items-center justify-center gap-4'>
+              <MicrosoftIcon />
+              Sign up with Microsoft
+            </Button>
           </div>
 
           <hr className='border- my-8' />
 
           <Input placeholder='Email Address' label='Email Address' className='mb-8' />
-          <Input type='password' placeholder='Password' label='Password' className='mb-8' />
+          <Input
+            type={showPassword ? 'text' : 'password'}
+            placeholder='Password'
+            label='Password'
+            className='mb-8'
+            icon={showPassword ? <OpenEyeIcon /> : <ClosedEyeIcon />}
+            onIconClick={togglePassword}
+          />
 
-          <button className='mb-8'>Log in</button>
+          <Button className='mb-8 w-full'>Log in</Button>
 
           <div className='text-navy-blue'>
             <span>Don't have an account?</span>
