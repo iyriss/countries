@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from '@remix-run/react';
-import { Input, Button } from '../../components/ui';
+import { Input, Button } from '../../components/shared';
 import { GoogleIcon, MicrosoftIcon, OpenEyeIcon, ClosedEyeIcon } from '../../components/icons';
 
 export default function () {
