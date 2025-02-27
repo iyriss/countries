@@ -5,7 +5,7 @@ type ButtonProps = {
   onClick?: () => void;
 };
 
-const Button: React.FC<ButtonProps> = ({ variant, children, onClick, className }) => {
+export const Button: React.FC<ButtonProps> = ({ variant, children, onClick, className }) => {
   const baseStyles = `px-4 py-2 font-semibold rounded-[40px] transition-colors ${className || ''}`;
   const variantStyles = {
     primary:
@@ -20,5 +20,3 @@ const Button: React.FC<ButtonProps> = ({ variant, children, onClick, className }
     </button>
   );
 };
-
-export default Button;

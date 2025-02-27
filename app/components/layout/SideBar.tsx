@@ -1,4 +1,5 @@
 import { MapIcon, LogOutIcon } from '../icons';
+import { Link } from '@remix-run/react';
 
 export default function SideBar() {
   return (
@@ -21,12 +22,12 @@ export default function SideBar() {
       <hr className='border-midnight/08 border' />
 
       <div className='mt-6 flex h-[calc(100vh-197px)] flex-col justify-between'>
-        <div className='flex items-center gap-4'>
+        <Link to='/' className='flex items-center gap-4'>
           <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple'>
             <MapIcon />
           </div>
           <div className='text-sm font-semibold'>Countries</div>
-        </div>
+        </Link>
         <div className='mb-[28px] flex items-center gap-4'>
           <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple bg-opacity-[04%]'>
             <LogOutIcon />
