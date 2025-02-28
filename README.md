@@ -1,40 +1,26 @@
-# Welcome to Remix!
+# Countries
 
-- 📖 [Remix docs](https://remix.run/docs)
+- 📖 This app uses the countries (https://restcountries.com/) API to display a list of them. There is the option to filter by continent and name. Additionaly, each country includes a details page.
+
 
 ## Development
 
+Create a `.env` file for the login authentication. The app uses a mock login email and password which you should include in your `.env` with the values
+
+```shellscript
+EMAIL=
+PASSWORD=
+```
+ 
 Run the dev server:
 
 ```shellscript
 npm run dev
 ```
 
-## Deployment
+## Approch
 
-First, build your app for production:
+I decided to use Remix for this app. I have found it very enjoyable to work with as it is easy for Forms, nested routes, loading states and in general a great development experience. It also comes with Tailwind which I find very easy to work with for styling. I used loaders, pagination and made it responsive. As well added 30 days caching to reduce API calls as the data retrieved does not change very often.
 
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+## Trade Offs
+The current implementation prioritizes developer experience and quick iteration over production ready features, which might be appropriate for an MVP or prototyping. Some improvements that could be made are adding proper authentiacation and implement retry mechanisms in case of errors when loading.
