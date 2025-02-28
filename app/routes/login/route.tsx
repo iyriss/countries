@@ -43,7 +43,9 @@ export const action: ActionFunction = async ({ request }) => {
     });
   }
 
-  return redirect('/');
+  const response = redirect('/');
+  response.headers.set('Set-Cookie', 'authenticated=true; Path=/');
+  return response;
 };
 
 export default function () {

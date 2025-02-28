@@ -1,4 +1,4 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import { Links, Meta, Outlet, redirect, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 
 import './tailwind.css';
@@ -27,7 +27,17 @@ const mockUser = {
   avatar: '/images/avatar.png',
 };
 
-export async function loader() {
+export async function loader({ request }: { request: Request }) {
+  const url = new URL(request.url);
+  const isLoginPage = url.pathname === '/login';
+
+  const cookieHeader = request.headers.get('Cookie') || '';
+  const isAuthenticated = cookieHeader.includes('authenticated=true');
+
+  if (!isAuthenticated && !isLoginPage) {
+    return redirect('/login');
+  }
+
   return { user: mockUser };
 }
 
