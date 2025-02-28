@@ -114,7 +114,7 @@ export default function Index() {
       <table className='w-full font-assistant'>
         <thead>
           <tr className='flex w-full px-12 pb-4 text-left text-sm font-semibold text-light-gray'>
-            <th className='max-w-[200px] flex-[2]'>Flag</th>
+            <th className='min-w-20 max-w-[200px] flex-[2]'>Flag</th>
             <th className='flex-[5]'>Name</th>
             <th className='flex-[6]'>Continent</th>
           </tr>
@@ -128,7 +128,7 @@ export default function Index() {
                 navigate(`/country/${country.cca3}`);
               }}
             >
-              <td className='max-w-[200px] flex-[2]'>
+              <td className='min-w-20 max-w-[200px] flex-[2]'>
                 <img
                   src={country.flags.png}
                   alt={`${country.name.common} flag`}

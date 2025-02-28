@@ -14,7 +14,7 @@ export function Layout({ children, title, description }: LayoutProps) {
       </div>
       <div className='flex w-full'>
         <SideBar />
-        <main className='flex flex-1 justify-center pl-[276px]'>
+        <main className='flex flex-1 justify-center transition-[padding] duration-300'>
           <div className='w-full max-w-screen-2xl p-2'>
             <div className='px-14 py-12'>
               <div className='font-inter mb-[45px]'>
