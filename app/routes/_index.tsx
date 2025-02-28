@@ -29,18 +29,42 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const continents = url.searchParams.getAll('continent');
   const search = url.searchParams.get('q')?.toLowerCase() ?? '';
 
-  // If cache exists and is valid, use it
   let allCountries;
   if (countriesCache && Date.now() - lastFetchTime < CACHE_DURATION) {
     allCountries = countriesCache;
   } else {
-    const res = await fetch('https://restcountries.com/v3.1/all?fields=name,flags,continents,cca3');
-    allCountries = await res.json();
-    allCountries.sort((a: any, b: any) => a?.name?.common?.localeCompare(b?.name?.common));
+    try {
+      const res = await fetch(
+        'https://restcountries.com/v3.1/all?fields=name,flags,continents,cca3',
+      );
+      if (!res.ok) {
+        throw new Error(`API returned status ${res.status}`);
+      }
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('API did not return JSON');
+      }
 
-    // Update cache
-    countriesCache = allCountries;
-    lastFetchTime = Date.now();
+      allCountries = await res.json();
+      allCountries.sort((a: any, b: any) => a?.name?.common?.localeCompare(b?.name?.common));
+
+      countriesCache = allCountries;
+      lastFetchTime = Date.now();
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+      return new Response(
+        JSON.stringify({
+          countries: [],
+          q: search,
+          pagination: { currentPage: 1, totalPages: 1 },
+          error: 'Failed to fetch countries data',
+        }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+    }
   }
 
   let filteredCountries = [...allCountries];
@@ -86,7 +110,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
-  const { countries, q, pagination } = useLoaderData<typeof loader>();
+  const { countries, q, pagination, error } = useLoaderData<typeof loader>();
   const [query, setQuery] = useState(q || '');
   const [searchParams] = useSearchParams();
   const submit = useSubmit();
@@ -118,83 +142,94 @@ export default function Index() {
         <SearchBar value={query} onInputChange={setQuery} onChange={handleSearchChange} />
       </div>
 
-      <table className='w-full font-assistant'>
-        <thead>
-          <tr className='flex w-full px-12 pb-4 text-left text-sm font-semibold text-light-gray'>
-            <th className='min-w-20 max-w-[200px] flex-[2]'>Flag</th>
-            <th className='flex-[5]'>Name</th>
-            <th className='flex-[6]'>Continent</th>
-          </tr>
-        </thead>
-        <tbody>
-          {countries.map((country: any) => {
-            const isLoading =
-              navigation.state === 'loading' &&
-              navigation.location.pathname === `/country/${country.cca3}`;
-
-            return (
-              <tr
-                key={country.name.common}
-                className={`mb-4 flex min-h-[78px] items-center rounded-[20px] px-12 font-semibold text-navy-blue ${isLoading ? 'animate-pulse cursor-wait bg-gray-100' : 'cursor-pointer bg-white'}`}
-                onClick={() => {
-                  if (!isLoading) {
-                    navigate(`/country/${country.cca3}`);
-                  }
-                }}
-              >
-                <td className='min-w-20 max-w-[200px] flex-[2]'>
-                  <img
-                    src={country.flags.png}
-                    alt={`${country.name.common} flag`}
-                    className={`h-12 w-12 rounded-full object-cover ${isLoading ? 'opacity-50' : ''}`}
-                  />
-                </td>
-                <td className='flex-[5] truncate'>{country.name.common}</td>
-                <td className='flex-[6]'>{country.continents.join(', ')}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-
-      {pagination?.totalPages > 1 ? (
-        <div className='mt-6 flex justify-center gap-2'>
-          <button
-            onClick={() => {
-              const params = new URLSearchParams(searchParams);
-              params.set('page', (pagination.currentPage - 1).toString());
-              submit(params, {
-                replace: true,
-              });
-            }}
-            disabled={pagination.currentPage === 1}
-            className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
-          >
-            <CaretIcon className='rotate-90' />
-            <span className='text-sm group-hover:underline'>Previous</span>
-          </button>
-
-          <span className='px-4 py-2 font-assistant'>
-            Page {pagination.currentPage} of {pagination.totalPages}{' '}
-          </span>
-
-          <button
-            onClick={() => {
-              const params = new URLSearchParams(searchParams);
-              params.set('page', (pagination.currentPage + 1).toString());
-              submit(params, {
-                replace: true,
-              });
-            }}
-            disabled={pagination.currentPage === pagination.totalPages}
-            className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
-          >
-            <span className='text-sm group-hover:underline'>Next</span>
-            <CaretIcon className='-rotate-90' />
-          </button>
+      {error ? (
+        <div className='p-8 text-center'>
+          <p className='font-semibold text-red-600'>{error}</p>
+          <p className='mt-2 text-light-gray'>
+            Please try again later or contact support if the problem persists.
+          </p>
         </div>
       ) : (
-        <div className='px-4 py-2 text-center text-light-gray'>No results found</div>
+        <>
+          <table className='w-full font-assistant'>
+            <thead>
+              <tr className='flex w-full px-12 pb-4 text-left text-sm font-semibold text-light-gray'>
+                <th className='min-w-20 max-w-[200px] flex-[2]'>Flag</th>
+                <th className='flex-[5]'>Name</th>
+                <th className='flex-[6]'>Continent</th>
+              </tr>
+            </thead>
+            <tbody>
+              {countries.map((country: any) => {
+                const isLoading =
+                  navigation.state === 'loading' &&
+                  navigation.location.pathname === `/country/${country.cca3}`;
+
+                return (
+                  <tr
+                    key={country.name.common}
+                    className={`mb-4 flex min-h-[78px] items-center rounded-[20px] px-12 font-semibold text-navy-blue ${isLoading ? 'animate-pulse cursor-wait bg-gray-100' : 'cursor-pointer bg-white'}`}
+                    onClick={() => {
+                      if (!isLoading) {
+                        navigate(`/country/${country.cca3}`);
+                      }
+                    }}
+                  >
+                    <td className='min-w-20 max-w-[200px] flex-[2]'>
+                      <img
+                        src={country.flags.png}
+                        alt={`${country.name.common} flag`}
+                        className={`h-12 w-12 rounded-full object-cover ${isLoading ? 'opacity-50' : ''}`}
+                      />
+                    </td>
+                    <td className='flex-[5] truncate'>{country.name.common}</td>
+                    <td className='flex-[6]'>{country.continents.join(', ')}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          {pagination?.totalPages > 1 ? (
+            <div className='mt-6 flex justify-center gap-2'>
+              <button
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams);
+                  params.set('page', (pagination.currentPage - 1).toString());
+                  submit(params, {
+                    replace: true,
+                  });
+                }}
+                disabled={pagination.currentPage === 1}
+                className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
+              >
+                <CaretIcon className='rotate-90' />
+                <span className='text-sm group-hover:underline'>Previous</span>
+              </button>
+
+              <span className='px-4 py-2 font-assistant'>
+                Page {pagination.currentPage} of {pagination.totalPages}{' '}
+              </span>
+
+              <button
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams);
+                  params.set('page', (pagination.currentPage + 1).toString());
+                  submit(params, {
+                    replace: true,
+                  });
+                }}
+                disabled={pagination.currentPage === pagination.totalPages}
+                className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
+              >
+                <span className='text-sm group-hover:underline'>Next</span>
+                <CaretIcon className='-rotate-90' />
+              </button>
+            </div>
+          ) : (
+            <div className='px-4 py-2 text-center text-light-gray'>No results found</div>
+          )}
+        </>
       )}
     </Layout>
   );

@@ -34,7 +34,7 @@ export const Dropdown = ({
   }, [onOpen]);
 
   return (
-    <div ref={dropdownRef} className='relative font-assistant text-navy-blue'>
+    <div ref={dropdownRef} className='relative w-full font-assistant text-navy-blue md:w-auto'>
       <button
         onClick={() => onOpen(!isOpen)}
         className={`flex h-[53px] items-center justify-between rounded-[25px] bg-white px-4 py-2 shadow-[0px_6px_12px_0px_rgba(142,152,157,0.08)] backdrop-blur-[10px] ${buttonClassName || ''}`}

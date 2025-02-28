@@ -14,14 +14,14 @@ export const SearchBar = ({ value, className, onChange, onInputChange }: SearchB
   const searching = navigation.location && new URLSearchParams(navigation.location.search).has('q');
 
   return (
-    <Form className='group relative' id='search-form' role='search' onChange={onChange}>
+    <Form className='group relative w-full' id='search-form' role='search' onChange={onChange}>
       <div className='absolute left-4 top-1/2 z-10 -translate-y-1/2 cursor-pointer transition-all hover:opacity-80'>
         <SearchIcon className='text-light-gray group-focus-within:text-navy-blue' />
       </div>
       <input
         id='q'
         aria-label='Search'
-        className={`h-[50px] rounded-[25px] py-4 pl-11 pr-4 font-assistant text-[14px] shadow-[0px_6px_12px_0px_#8E989D14] backdrop-blur-[10px] placeholder:font-assistant placeholder:text-[14px] placeholder:text-[#a6a8b4] ${className || ''}`}
+        className={`h-[50px] w-full rounded-[25px] py-4 pl-11 pr-4 font-assistant text-[14px] shadow-[0px_6px_12px_0px_#8E989D14] backdrop-blur-[10px] placeholder:font-assistant placeholder:text-[14px] placeholder:text-[#a6a8b4] md:max-w-[280px] ${className || ''}`}
         placeholder='Search'
         type='search'
         name='q'

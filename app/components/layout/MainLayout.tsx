@@ -24,9 +24,9 @@ export function Layout({ children, title, description, backButton = false }: Lay
       <div className='flex w-full'>
         <SideBar />
 
-        <main className='flex flex-1 justify-center transition-[padding] duration-300'>
+        <main className='flex flex-1 justify-center px-0 transition-[padding] duration-300 md:px-0 md:pl-[calc(var(--sidebar-open)*276px)]'>
           <div className='w-full max-w-screen-2xl md:p-2'>
-            <div className='px-14 py-12'>
+            <div className='px-6 py-12 md:px-14'>
               <div className='mb-[45px] font-assistant text-sm text-navy-blue group-hover:underline'>
                 {backButton ? (
                   <button

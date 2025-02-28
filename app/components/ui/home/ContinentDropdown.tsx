@@ -72,7 +72,7 @@ export const ContinentDropdown = () => {
       isOpen={isOpen}
       allItems={allContinents}
       selectedItems={selectedContinents}
-      buttonClassName='w-[165px]'
+      buttonClassName='w-full md:w-[165px]'
       onOpen={setIsOpen}
       getDisplayText={getDisplayText}
       onToggleOption={handleToggleContinent}
