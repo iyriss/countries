@@ -1,6 +1,12 @@
 import { FormEvent, useEffect, useState } from 'react';
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useNavigate, useSearchParams, useSubmit } from '@remix-run/react';
+import {
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+  useSubmit,
+  useNavigation,
+} from '@remix-run/react';
 import { Layout } from '../components/layout/MainLayout';
 import { ContinentDropdown } from '../components/ui/home/ContinentDropdown';
 import { SearchBar } from '../components/shared';
@@ -85,7 +91,8 @@ export default function Index() {
   const [searchParams] = useSearchParams();
   const submit = useSubmit();
   const navigate = useNavigate();
-  const continents = searchParams.getAll('continent');
+  const navigation = useNavigation();
+
   useEffect(() => {
     setQuery(q || '');
   }, [q]);
@@ -120,25 +127,33 @@ export default function Index() {
           </tr>
         </thead>
         <tbody>
-          {countries.map((country: any) => (
-            <tr
-              key={country.name.common}
-              className='mb-4 flex min-h-[78px] items-center rounded-[20px] bg-white px-12 font-semibold text-navy-blue'
-              onClick={() => {
-                navigate(`/country/${country.cca3}`);
-              }}
-            >
-              <td className='min-w-20 max-w-[200px] flex-[2]'>
-                <img
-                  src={country.flags.png}
-                  alt={`${country.name.common} flag`}
-                  className='h-12 w-12 rounded-full object-cover'
-                />
-              </td>
-              <td className='flex-[5] truncate'>{country.name.common}</td>
-              <td className='flex-[6]'>{country.continents.join(', ')}</td>
-            </tr>
-          ))}
+          {countries.map((country: any) => {
+            const isLoading =
+              navigation.state === 'loading' &&
+              navigation.location.pathname === `/country/${country.cca3}`;
+
+            return (
+              <tr
+                key={country.name.common}
+                className={`mb-4 flex min-h-[78px] items-center rounded-[20px] px-12 font-semibold text-navy-blue ${isLoading ? 'animate-pulse cursor-wait bg-gray-100' : 'cursor-pointer bg-white'}`}
+                onClick={() => {
+                  if (!isLoading) {
+                    navigate(`/country/${country.cca3}`);
+                  }
+                }}
+              >
+                <td className='min-w-20 max-w-[200px] flex-[2]'>
+                  <img
+                    src={country.flags.png}
+                    alt={`${country.name.common} flag`}
+                    className={`h-12 w-12 rounded-full object-cover ${isLoading ? 'opacity-50' : ''}`}
+                  />
+                </td>
+                <td className='flex-[5] truncate'>{country.name.common}</td>
+                <td className='flex-[6]'>{country.continents.join(', ')}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 

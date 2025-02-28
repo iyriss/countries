@@ -15,7 +15,7 @@ export default function Card({ label, value, imgSrc, imgAlt }: CardProps) {
         <img
           src={imgSrc}
           alt={imgAlt}
-          className='mx-auto mt-8 max-h-[170px] w-full max-w-[255px] rounded-2xl object-cover'
+          className='mx-auto mt-8 h-[calc(100%-4rem)] max-h-[170px] w-full max-w-[255px] rounded-2xl object-cover'
         />
       )}
       {value && <p className='text-[32px] text-navy-blue'>{value}</p>}
