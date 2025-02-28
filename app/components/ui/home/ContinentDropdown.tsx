@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams, useSubmit } from 'react-router-dom';
 import { Dropdown } from '../../shared';
 
 const allContinents = [
@@ -13,21 +14,38 @@ const allContinents = [
 
 export const ContinentDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedContinents, setSelectedContinents] = useState<string[]>(['All continents']);
+  const [searchParams] = useSearchParams();
+  const continentsFromUrl = searchParams.getAll('continent');
+  const [selectedContinents, setSelectedContinents] = useState<string[]>(
+    continentsFromUrl.length > 0 ? continentsFromUrl : ['All continents'],
+  );
+
+  const submit = useSubmit();
 
   const handleToggleContinent = (continent: string) => {
-    setSelectedContinents((prev) => {
-      if (continent === 'All continents') {
-        return ['All continents'];
+    const params = new URLSearchParams(searchParams);
+    params.delete('continent');
+    params.delete('page');
+
+    if (continent === 'All continents') {
+      setSelectedContinents(['All continents']);
+    } else {
+      const newSelection = selectedContinents.filter((c) => c !== 'All continents');
+      if (newSelection.includes(continent)) {
+        newSelection.splice(newSelection.indexOf(continent), 1);
+      } else {
+        newSelection.push(continent);
       }
 
-      const newSelection = prev.filter((c) => c !== 'All continents');
-      if (newSelection.includes(continent)) {
-        return newSelection.filter((c) => c !== continent);
+      if (newSelection.length === 0) {
+        params.append('continent', 'All continents');
       } else {
-        return [...newSelection, continent];
+        newSelection.forEach((c) => params.append('continent', c));
       }
-    });
+      setSelectedContinents(newSelection.length === 0 ? ['All continents'] : newSelection);
+    }
+
+    submit(params, { replace: true });
   };
 
   const getDisplayText = () => {

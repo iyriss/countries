@@ -1,8 +1,9 @@
+import { FormEvent, useEffect, useState } from 'react';
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useNavigate, useNavigation, useSearchParams } from '@remix-run/react';
+import { useLoaderData, useNavigate, useSearchParams, useSubmit } from '@remix-run/react';
 import { Layout } from '../components/layout/MainLayout';
 import { ContinentDropdown } from '../components/ui/home/ContinentDropdown';
-import { LoadingComponent, SearchBar } from '../components/shared';
+import { SearchBar } from '../components/shared';
 import { CaretIcon } from '../components/icons';
 
 export const meta: MetaFunction = () => {
@@ -17,8 +18,10 @@ const ITEMS_PER_PAGE = 20;
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
-  const page = parseInt(url.searchParams.get('page') ?? '1');
-  const continent = url.searchParams.get('continent') ?? 'all';
+  const page = url.searchParams.get('page');
+
+  const continents = url.searchParams.getAll('continent');
+  const search = url.searchParams.get('q')?.toLowerCase() ?? '';
 
   // If cache exists and is valid, use it
   let allCountries;
@@ -34,21 +37,38 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     lastFetchTime = Date.now();
   }
 
-  const totalItems = allCountries.length;
+  let filteredCountries = [...allCountries];
+
+  if (continents.length > 0 && !continents.includes('All continents')) {
+    filteredCountries = filteredCountries.filter((country: any) =>
+      country.continents.some((continent: string) => continents.includes(continent)),
+    );
+  }
+
+  if (search) {
+    filteredCountries = filteredCountries.filter((country: any) => {
+      const nameMatch = country.name.common.toLowerCase().includes(search);
+      return nameMatch;
+    });
+  }
+
+  const totalItems = filteredCountries.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const currentPage = Math.min(Math.max(1, page), totalPages);
+  const currentPage = Math.min(Math.max(1, page ? parseInt(page) : 1), totalPages);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
+  const paginatedCountries = filteredCountries.slice(startIndex, endIndex);
+  const pagination = {
+    currentPage,
+    totalPages,
+  };
+
   return new Response(
     JSON.stringify({
-      countries: allCountries.slice(startIndex, endIndex),
-      pagination: {
-        currentPage,
-        totalPages,
-        totalItems,
-        itemsPerPage: ITEMS_PER_PAGE,
-      },
+      countries: paginatedCountries,
+      q: search,
+      pagination,
     }),
     {
       headers: {
@@ -60,26 +80,35 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
-  const { countries, pagination } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
-  const navigation = useNavigation();
+  const { countries, q, pagination } = useLoaderData<typeof loader>();
+  const [query, setQuery] = useState(q || '');
   const [searchParams] = useSearchParams();
+  const submit = useSubmit();
+  const navigate = useNavigate();
+  const continents = searchParams.getAll('continent');
+  useEffect(() => {
+    setQuery(q || '');
+  }, [q]);
 
-  if (navigation.state === 'loading') {
-    return <LoadingComponent />;
-  }
+  const handleSearchChange = (e: FormEvent<HTMLFormElement>) => {
+    const isFirstSearch = q === null;
+    const formData = new FormData(e.currentTarget);
 
-  const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', newPage.toString());
-    navigate(`?${params.toString()}`);
+    const qParam = formData.get('q') as string;
+    qParam ? params.set('q', qParam) : params.delete('q');
+    params.delete('page');
+
+    submit(params, {
+      replace: !isFirstSearch,
+    });
   };
 
   return (
     <Layout title='Countries' description='A database of the countries of the world'>
       <div className='mb-10 flex items-center gap-4'>
         <ContinentDropdown />
-        <SearchBar className='h-[50px] w-[280px]' />
+        <SearchBar value={query} onInputChange={setQuery} onChange={handleSearchChange} />
       </div>
 
       <table className='w-full font-assistant'>
@@ -113,29 +142,45 @@ export default function Index() {
         </tbody>
       </table>
 
-      <div className='mt-6 flex justify-center gap-2'>
-        <button
-          onClick={() => handlePageChange(pagination.currentPage - 1)}
-          disabled={pagination.currentPage === 1}
-          className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
-        >
-          <CaretIcon className='rotate-90' />
-          <span className='text-sm group-hover:underline'>Previous</span>
-        </button>
+      {pagination?.totalPages > 1 ? (
+        <div className='mt-6 flex justify-center gap-2'>
+          <button
+            onClick={() => {
+              const params = new URLSearchParams(searchParams);
+              params.set('page', (pagination.currentPage - 1).toString());
+              submit(params, {
+                replace: true,
+              });
+            }}
+            disabled={pagination.currentPage === 1}
+            className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
+          >
+            <CaretIcon className='rotate-90' />
+            <span className='text-sm group-hover:underline'>Previous</span>
+          </button>
 
-        <span className='px-4 py-2'>
-          Page {pagination.currentPage} of {pagination.totalPages}
-        </span>
+          <span className='px-4 py-2 font-assistant'>
+            Page {pagination.currentPage} of {pagination.totalPages}{' '}
+          </span>
 
-        <button
-          onClick={() => handlePageChange(pagination.currentPage + 1)}
-          disabled={pagination.currentPage === pagination.totalPages}
-          className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
-        >
-          <span className='text-sm group-hover:underline'>Next</span>
-          <CaretIcon className='-rotate-90' />
-        </button>
-      </div>
+          <button
+            onClick={() => {
+              const params = new URLSearchParams(searchParams);
+              params.set('page', (pagination.currentPage + 1).toString());
+              submit(params, {
+                replace: true,
+              });
+            }}
+            disabled={pagination.currentPage === pagination.totalPages}
+            className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
+          >
+            <span className='text-sm group-hover:underline'>Next</span>
+            <CaretIcon className='-rotate-90' />
+          </button>
+        </div>
+      ) : (
+        <div className='px-4 py-2 text-center text-light-gray'>No results found</div>
+      )}
     </Layout>
   );
 }
