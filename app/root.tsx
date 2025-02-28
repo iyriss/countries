@@ -16,6 +16,15 @@ export const links: LinksFunction = () => [
   },
 ];
 
+const mockUser = {
+  name: 'Brian Johnson',
+  avatar: '/images/avatar.png',
+};
+
+export async function loader() {
+  return { user: mockUser };
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>

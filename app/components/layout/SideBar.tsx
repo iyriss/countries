@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapIcon, LogOutIcon } from '../icons';
-import { Link } from '@remix-run/react';
+import { Link, useMatches } from '@remix-run/react';
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(true);
+  const matches = useMatches();
+  const userData = (matches[0]?.data as { user: { name: string; avatar: string } })?.user;
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--sidebar-open', isOpen ? '1' : '0');
+  }, [isOpen]);
 
   return (
     <>
@@ -30,31 +36,31 @@ export default function SideBar() {
         <div className='mb-[46px] mt-8 flex items-center gap-4'>
           <div>
             <img
-              src='/images/avatar.png'
+              src={userData?.avatar || '/images/avatar.png'}
               alt='avatar'
               className='h-10 w-10 rounded-full object-cover object-[center_top]'
             />
           </div>
           <div>
-            <div className='font-semibold'>Brian Johnson</div>
-            <div className='text-sm'>Edit Profile</div>
+            <div className='font-semibold'>{userData?.name || ''}</div>
+            <div className='cursor-pointer text-sm hover:underline'>Edit Profile</div>
           </div>
         </div>
 
         <hr className='border-midnight/08 border' />
 
         <div className='mt-6 flex h-[calc(100vh-197px)] flex-col justify-between'>
-          <Link to='/' className='flex items-center gap-4'>
-            <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple'>
+          <Link to='/' className='group flex items-center gap-4'>
+            <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple group-hover:bg-opacity-80'>
               <MapIcon />
             </div>
-            <div className='text-sm font-semibold'>Countries</div>
+            <span className='text-sm font-semibold group-hover:text-navy-blue'>Countries</span>
           </Link>
-          <div className='mb-[28px] flex items-center gap-4'>
-            <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple bg-opacity-[04%]'>
+          <div className='group mb-[28px] flex cursor-pointer items-center gap-4'>
+            <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple bg-opacity-[04%] group-hover:bg-opacity-[0.1]'>
               <LogOutIcon />
             </div>
-            <div className='font-semibold'>Log Out</div>
+            <span className='font-semibold group-hover:text-navy-blue'>Log Out</span>
           </div>
         </div>
       </div>

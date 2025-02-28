@@ -7,3 +7,7 @@ body {
   height: 100%;
   margin: 0;
 }
+
+.main-content {
+  padding-left: calc(var(--sidebar-open) * 276px);
+}
