@@ -12,7 +12,7 @@ export const links: LinksFunction = () => [
   },
   {
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap',
+    href: 'https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Inter:wght@400..700&display=swap',
   },
 ];
 
@@ -25,7 +25,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className='font-inter'>
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />

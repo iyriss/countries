@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-const OpenEyeIcon = (props: SVGProps<SVGSVGElement>) => {
+const EyeIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width='20'
@@ -28,7 +28,7 @@ const OpenEyeIcon = (props: SVGProps<SVGSVGElement>) => {
   );
 };
 
-const ClosedEyeIcon = (props: SVGProps<SVGSVGElement>) => (
+const EyeOffIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns='http://www.w3.org/2000/svg' width={20} height={20} fill='none' {...props}>
     <path stroke='#4D5169' strokeLinecap='round' d='M19 4 1 16' />
     <g stroke='#202543' strokeLinecap='round' strokeLinejoin='round' opacity={0.8}>
@@ -38,4 +38,4 @@ const ClosedEyeIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export { OpenEyeIcon, ClosedEyeIcon };
+export { EyeIcon, EyeOffIcon };
