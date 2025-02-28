@@ -46,7 +46,7 @@ export const Dropdown = ({
       </button>
 
       {isOpen && (
-        <div className='absolute z-10 mt-2 w-full overflow-auto rounded-[12px] bg-white py-5 shadow-[0px_6px_12px_0px_rgba(142,152,157,0.08)] backdrop-blur-[10px]'>
+        <div className='absolute mt-2 w-full overflow-auto rounded-[12px] bg-white py-5 shadow-[0px_6px_12px_0px_rgba(142,152,157,0.08)] backdrop-blur-[10px]'>
           {allItems.map((item) => {
             const isSelected = selectedItems.includes(item);
             return (
