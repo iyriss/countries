@@ -1,20 +1,28 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 
-import './tailwind.css';
+import tailwindStylesheetUrl from './tailwind.css?url';
 
-export const links: LinksFunction = () => [
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Inter:wght@400..700&display=swap',
-  },
-];
+export const links: LinksFunction = () => {
+  return [
+    { rel: 'preload', href: tailwindStylesheetUrl, as: 'style' },
+    { rel: 'stylesheet', href: tailwindStylesheetUrl },
+    {
+      rel: 'preload',
+      href: '/fonts/Inter-VariableFont_opsz,wght.ttf',
+      as: 'font',
+      type: 'font/ttf',
+      crossOrigin: 'anonymous',
+    },
+    {
+      rel: 'preload',
+      href: '/fonts/Assistant-VariableFont_wght.ttf',
+      as: 'font',
+      type: 'font/ttf',
+      crossOrigin: 'anonymous',
+    },
+  ];
+};
 
 const mockUser = {
   name: 'Brian Johnson',

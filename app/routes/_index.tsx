@@ -30,7 +30,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   } else {
     const res = await fetch('https://restcountries.com/v3.1/all?fields=name,flags,continents,cca3');
     allCountries = await res.json();
-    allCountries.sort((a: any, b: any) => a.name.common.localeCompare(b.name.common));
+    allCountries.sort((a: any, b: any) => a?.name?.common?.localeCompare(b?.name?.common));
 
     // Update cache
     countriesCache = allCountries;
