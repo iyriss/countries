@@ -1,12 +1,10 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 
-import tailwindStylesheetUrl from './tailwind.css?url';
+import './tailwind.css';
 
 export const links: LinksFunction = () => {
   return [
-    { rel: 'preload', href: tailwindStylesheetUrl, as: 'style' },
-    { rel: 'stylesheet', href: tailwindStylesheetUrl },
     {
       rel: 'preload',
       href: '/fonts/Inter-VariableFont_opsz,wght.ttf',

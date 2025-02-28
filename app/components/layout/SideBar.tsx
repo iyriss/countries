@@ -3,9 +3,20 @@ import { MapIcon, LogOutIcon } from '../icons';
 import { Link, useMatches } from '@remix-run/react';
 
 export default function SideBar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const matches = useMatches();
   const userData = (matches[0]?.data as { user: { name: string; avatar: string } })?.user;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsOpen(window.innerWidth >= 768);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--sidebar-open', isOpen ? '1' : '0');
@@ -30,7 +41,7 @@ export default function SideBar() {
       <div
         className={`fixed z-20 m-2 h-[calc(100vh-16px)] w-[260px] rounded-[32px] bg-white/80 px-8 text-navy-blue/70 backdrop-blur-[40px] transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0`}
+        } md:relative`}
       >
         <hr className='border-midnight/08 mt-[47px] border' />
         <div className='mb-[46px] mt-8 flex items-center gap-4'>
@@ -51,7 +62,7 @@ export default function SideBar() {
 
         <div className='mt-6 flex h-[calc(100vh-197px)] flex-col justify-between'>
           <Link to='/' className='group flex items-center gap-4'>
-            <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple group-hover:bg-opacity-80'>
+            <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple group-hover:bg-opacity-90'>
               <MapIcon />
             </div>
             <span className='text-sm font-semibold group-hover:text-navy-blue'>Countries</span>

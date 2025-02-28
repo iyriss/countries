@@ -4,10 +4,11 @@ import SideBar from './SideBar';
 type LayoutProps = {
   title: string;
   description: string;
+  backButton?: boolean;
   children: React.ReactNode;
 };
 
-export function Layout({ children, title, description }: LayoutProps) {
+export function Layout({ children, title, description, backButton = false }: LayoutProps) {
   const [isNavigating, setIsNavigating] = useState(false);
 
   const handleBack = () => {
@@ -23,35 +24,34 @@ export function Layout({ children, title, description }: LayoutProps) {
       <div className='flex w-full'>
         <SideBar />
 
-        <main
-          style={{ paddingLeft: 'calc(var(--sidebar-open) * 276px)' }}
-          className='flex flex-1 justify-center transition-[padding] duration-300'
-        >
-          <div className='w-full max-w-screen-2xl p-2'>
+        <main className='flex flex-1 justify-center transition-[padding] duration-300'>
+          <div className='w-full max-w-screen-2xl md:p-2'>
             <div className='px-14 py-12'>
               <div className='mb-[45px] font-assistant text-sm text-navy-blue group-hover:underline'>
-                <button
-                  onClick={handleBack}
-                  disabled={isNavigating}
-                  className='mb-6 flex items-center text-heather-gray transition-colors hover:underline disabled:opacity-50'
-                >
-                  <svg
-                    width='24'
-                    height='20'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    className={`mr-1 ${isNavigating ? 'animate-pulse' : ''}`}
+                {backButton ? (
+                  <button
+                    onClick={handleBack}
+                    disabled={isNavigating}
+                    className='mb-6 flex items-center text-heather-gray transition-colors hover:underline disabled:opacity-50'
                   >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M19 12H5M12 19l-7-7 7-7'
-                    />
-                  </svg>
-                  {isNavigating ? 'Going back...' : 'Back'}
-                </button>
+                    <svg
+                      width='24'
+                      height='20'
+                      viewBox='0 0 24 24'
+                      fill='none'
+                      stroke='currentColor'
+                      className={`mr-1 ${isNavigating ? 'animate-pulse' : ''}`}
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M19 12H5M12 19l-7-7 7-7'
+                      />
+                    </svg>
+                    {isNavigating ? 'Going back...' : 'Back'}
+                  </button>
+                ) : null}
                 <h1 className='text-[40px] font-semibold text-dark-purple'>{title}</h1>
                 <div className='mt-3 text-heather-gray'>{description}</div>
               </div>
