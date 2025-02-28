@@ -62,7 +62,19 @@ export default function CountryDetails() {
   const { country } = useLoaderData<typeof loader>();
 
   return (
-    <Layout title='Country Details' description='Loading country details' backButton>
+    <Layout
+      title={
+        <Suspense fallback='Loading country description...'>
+          <Await resolve={country}>{(country) => country.name.common}</Await>
+        </Suspense>
+      }
+      description={
+        <Suspense fallback='Loading country description...'>
+          <Await resolve={country}>{(country) => country.description}</Await>
+        </Suspense>
+      }
+      backButton
+    >
       <Suspense fallback={<CountryDetailsSkeleton />}>
         <Await resolve={country}>
           <CountryContent />

@@ -137,7 +137,7 @@ export default function Index() {
 
   return (
     <Layout title='Countries' description='A database of the countries of the world'>
-      <div className='mb-10 flex items-center gap-4'>
+      <div className='font-inter mb-10 flex items-center gap-4'>
         <ContinentDropdown />
         <SearchBar value={query} onInputChange={setQuery} onChange={handleSearchChange} />
       </div>
@@ -190,7 +190,7 @@ export default function Index() {
             </tbody>
           </table>
 
-          {pagination?.totalPages > 1 ? (
+          {pagination?.totalPages >= 1 ? (
             <div className='mt-6 flex justify-center gap-2'>
               <button
                 onClick={() => {

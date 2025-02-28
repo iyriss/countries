@@ -2,8 +2,8 @@ import { useState } from 'react';
 import SideBar from './SideBar';
 
 type LayoutProps = {
-  title: string;
-  description: string;
+  title: string | React.ReactNode;
+  description: string | React.ReactNode;
   backButton?: boolean;
   children: React.ReactNode;
 };
@@ -52,8 +52,8 @@ export function Layout({ children, title, description, backButton = false }: Lay
                     {isNavigating ? 'Going back...' : 'Back'}
                   </button>
                 ) : null}
-                <h1 className='text-[40px] font-semibold text-dark-purple'>{title}</h1>
-                <div className='mt-3 text-heather-gray'>{description}</div>
+                <h1 className='font-inter text-[40px] font-semibold text-dark-purple'>{title}</h1>
+                <div className='font-inter mt-3 text-heather-gray'>{description}</div>
               </div>
 
               {children}

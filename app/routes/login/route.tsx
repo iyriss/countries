@@ -65,9 +65,9 @@ export default function () {
   );
 
   return (
-    <div className='flex h-full w-full flex-col md:flex-row'>
-      <div className='mx-auto mb-8 mt-16 w-full p-8 text-navy-blue md:m-auto md:w-1/2 md:p-6'>
-        <div className='mx-auto w-full max-w-[544px]'>
+    <div className='flex h-full w-full flex-col font-assistant md:flex-row'>
+      <div className='mx-auto mb-8 w-full p-4 text-navy-blue sm:p-6 md:m-auto md:w-1/2 lg:mt-16'>
+        <div className='mx-auto w-full max-w-[440px] lg:max-w-[544px]'>
           <h1 className='mb-4 text-[32px] font-semibold'>Welcome Back!</h1>
           <p>Learn all about the countries of the world</p>
 
@@ -121,24 +121,26 @@ export default function () {
         </div>
       </div>
 
-      <div className='mx-auto w-full p-6 md:w-1/2'>
-        <div className='mx-auto h-full max-w-[544px] rounded-[40px] bg-primary p-6 px-16 text-white md:max-w-[872px]'>
-          <div className='mb-10 mt-[123px] max-w-[651px] text-4xl font-semibold'>
+      <div className='mx-auto w-full p-4 sm:p-6 md:w-1/2'>
+        <div className='mx-auto h-fit max-w-[440px] rounded-[40px] bg-primary p-4 text-white sm:p-6 sm:px-8 md:h-full md:max-w-[600px] lg:max-w-[872px] lg:px-16'>
+          <div className='mb-6 mt-4 max-w-[651px] text-2xl font-semibold sm:text-3xl xl:mb-10 xl:text-4xl 2xl:mt-[123px]'>
             The simplest way to track and manage your geographical data
           </div>
-          <div className='text-xl'>Enter your credentials to access your account</div>
+          <div className='text-lg lg:text-xl'>Enter your credentials to access your account</div>
 
-          <div className='mt-16 flex h-fit flex-col md:mt-[160px]'>
-            <img
-              src='/images/countries-list.png'
-              alt='Countries list preview'
-              className='w-[80%] shadow-[0px_40px_100px_0px_rgba(0,0,0,0.3)] md:max-w-[550px]'
-            />
-            <img
-              src='/images/country-overview.png'
-              alt='Country overview preview'
-              className='ml-auto w-[80%] -translate-y-[30%] shadow-[0px_40px_100px_0px_rgba(0,0,0,0.3)] md:max-w-[550px]'
-            />
+          <div className='relative mt-8 min-h-[200px] md:min-h-[400px] lg:mt-16 lg:h-[600px]'>
+            <div className='absolute w-full'>
+              <img
+                src='/images/countries-list.png'
+                alt='Countries list preview'
+                className='w-[60%] shadow-[0px_40px_100px_0px_rgba(0,0,0,0.3)] md:w-[65%] md:max-w-[550px] lg:w-[70%]'
+              />
+              <img
+                src='/images/country-overview.png'
+                alt='Country overview preview'
+                className='ml-auto mt-[-15%] w-[60%] shadow-[0px_40px_100px_0px_rgba(0,0,0,0.3)] md:w-[65%] md:max-w-[550px] lg:w-[70%]'
+              />
+            </div>
           </div>
         </div>
       </div>

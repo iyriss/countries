@@ -39,7 +39,7 @@ export default function SideBar() {
       </button>
 
       <div
-        className={`fixed z-20 m-2 h-[calc(100vh-16px)] w-[260px] rounded-[32px] bg-white/80 px-8 text-navy-blue/70 backdrop-blur-[40px] transition-transform duration-300 ${
+        className={`font-inter fixed z-20 m-2 h-[calc(100vh-16px)] w-[260px] rounded-[32px] bg-white/80 px-8 text-navy-blue/70 backdrop-blur-[40px] transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -60,7 +60,7 @@ export default function SideBar() {
 
         <hr className='border-midnight/08 border' />
 
-        <div className='mt-6 flex h-[calc(100vh-197px)] flex-col justify-between'>
+        <div className='font-inter mt-6 flex h-[calc(100vh-197px)] flex-col justify-between'>
           <Link to='/' className='group flex items-center gap-4'>
             <div className='flex h-11 w-11 items-center justify-center rounded-full bg-dark-purple group-hover:bg-opacity-90'>
               <MapIcon />
