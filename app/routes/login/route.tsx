@@ -51,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function () {
   const actionData = useActionData<typeof action>();
   const [showPassword, setShowPassword] = useState(false);
-  console.log('A', actionData);
+
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };

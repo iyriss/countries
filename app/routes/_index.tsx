@@ -137,7 +137,7 @@ export default function Index() {
 
   return (
     <Layout title='Countries' description='A database of the countries of the world'>
-      <div className='font-inter mb-10 flex items-center gap-4'>
+      <div className='mb-10 flex items-center gap-4 font-inter'>
         <ContinentDropdown />
         <SearchBar value={query} onInputChange={setQuery} onChange={handleSearchChange} />
       </div>
@@ -151,54 +151,58 @@ export default function Index() {
         </div>
       ) : (
         <>
-          <table className='w-full font-assistant'>
-            <thead>
-              <tr className='flex w-full px-12 pb-4 text-left text-sm font-semibold text-light-gray'>
-                <th className='min-w-20 max-w-[200px] flex-[2]'>Flag</th>
-                <th className='flex-[5]'>Name</th>
-                <th className='flex-[6]'>Continent</th>
-              </tr>
-            </thead>
-            <tbody>
-              {countries.map((country: any) => {
-                const isLoading =
-                  navigation.state === 'loading' &&
-                  navigation.location.pathname === `/country/${country.cca3}`;
+          <div className='w-full'>
+            <table className='w-full font-assistant'>
+              <thead>
+                <tr className='grid w-full grid-cols-[1fr_2fr_2fr] gap-2 px-4 pb-4 text-left text-sm font-semibold text-light-gray sm:px-12'>
+                  <th>Flag</th>
+                  <th>Name</th>
+                  <th>Continent</th>
+                </tr>
+              </thead>
+              <tbody>
+                {countries.map((country: any) => {
+                  const isLoading =
+                    navigation.state === 'loading' &&
+                    navigation.location.pathname === `/country/${country.cca3}`;
 
-                return (
-                  <tr
-                    key={country.name.common}
-                    className={`mb-4 flex min-h-[78px] items-center rounded-[20px] px-12 font-semibold text-navy-blue ${isLoading ? 'animate-pulse cursor-wait bg-gray-100' : 'cursor-pointer bg-white'}`}
-                    onClick={() => {
-                      if (!isLoading) {
-                        navigate(`/country/${country.cca3}`);
-                      }
-                    }}
-                  >
-                    <td className='min-w-20 max-w-[200px] flex-[2]'>
-                      <img
-                        src={country.flags.png}
-                        alt={`${country.name.common} flag`}
-                        className={`h-12 w-12 rounded-full object-cover ${isLoading ? 'opacity-50' : ''}`}
-                      />
-                    </td>
-                    <td className='flex-[5] truncate'>{country.name.common}</td>
-                    <td className='flex-[6]'>{country.continents.join(', ')}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                  return (
+                    <tr
+                      key={country.name.common}
+                      className={`mb-4 grid min-h-[78px] grid-cols-[1fr_2fr_2fr] items-center gap-2 rounded-[20px] px-4 font-semibold text-navy-blue sm:px-12 ${
+                        isLoading ? 'cursor-wait bg-gray-100' : 'cursor-pointer bg-white'
+                      }`}
+                      onClick={() => {
+                        if (!isLoading) {
+                          navigate(`/country/${country.cca3}`);
+                        }
+                      }}
+                    >
+                      <td>
+                        <img
+                          src={country.flags.png}
+                          alt={`${country.name.common} flag`}
+                          className={`h-8 w-8 rounded-full object-cover sm:h-12 sm:w-12 ${isLoading ? 'opacity-50' : ''}`}
+                        />
+                      </td>
+                      <td className='truncate'>{country.name.common}</td>
+                      <td className='truncate text-sm text-gray-500 md:text-base md:text-navy-blue'>
+                        {country.continents.join(', ')}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
 
-          {pagination?.totalPages >= 1 ? (
+          {countries?.length >= 1 ? (
             <div className='mt-6 flex justify-center gap-2'>
               <button
                 onClick={() => {
                   const params = new URLSearchParams(searchParams);
                   params.set('page', (pagination.currentPage - 1).toString());
-                  submit(params, {
-                    replace: true,
-                  });
+                  submit(params, { replace: false });
                 }}
                 disabled={pagination.currentPage === 1}
                 className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
@@ -215,9 +219,7 @@ export default function Index() {
                 onClick={() => {
                   const params = new URLSearchParams(searchParams);
                   params.set('page', (pagination.currentPage + 1).toString());
-                  submit(params, {
-                    replace: true,
-                  });
+                  submit(params, { replace: false });
                 }}
                 disabled={pagination.currentPage === pagination.totalPages}
                 className='group flex items-center gap-2 px-4 py-2 text-sm text-navy-blue/70 disabled:opacity-0'
