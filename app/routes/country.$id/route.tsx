@@ -9,19 +9,17 @@ import { CountryDetailsSkeleton } from '../../components/ui/country-details/Coun
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { id } = params;
 
-  const countryPromise = fetch(
+  const response = await fetch(
     `https://restcountries.com/v3.1/alpha/${id}?fields=name,population,languages,capital,flags,subregion,region`,
-  )
-    .then((res) => {
-      if (!res.ok) {
-        throw new Response('Country not found', { status: 404 });
-      }
-      return res.json();
-    })
-    .then((data) => {
-      const description = getDescription(data);
-      return { ...data, description };
-    });
+  );
+
+  if (!response.ok) {
+    throw new Response('Country not found', { status: 404 });
+  }
+
+  const data = await response.json();
+  const description = getDescription(data);
+  const countryPromise = { ...data, description };
 
   return defer({
     country: countryPromise,
